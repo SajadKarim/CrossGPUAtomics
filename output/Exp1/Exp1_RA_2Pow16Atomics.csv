@@ -1,0 +1,19 @@
+==6821== NVPROF is profiling process 6821, command: ./sandbox ra 65536/1024 1024
+==6821== Profiling application: ./sandbox ra 65536/1024 1024
+==6821== Profiling result:
+
+==6821== Device "Tesla V100-SXM2-32GB (0)"
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",100.000000,0.545640,10,0.054564,0.054558,0.054572,"remoteAtomicsKernel(DATA*)"
+
+==6821== Device "Tesla V100-SXM2-32GB (1)"
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",100.000000,0.000022,10,0.000002,0.000002,0.000002,"[CUDA memcpy DtoH]"
+
+==6821== Device "Tesla V100-SXM2-32GB (2)"
+No kernels were profiled.
+
+==6821== Device "Tesla V100-SXM2-32GB (3)"
+No kernels were profiled.

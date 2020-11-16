@@ -1,0 +1,8 @@
+==9953== NVPROF is profiling process 9953, command: ./sandbox b1 2 400000 ./output/Exp3/Exp3_BL_2Pow11LocalAtomics_CPUMerge_RAND400000_cpu.csv
+==9953== Profiling application: ./sandbox b1 2 400000 ./output/Exp3/Exp3_BL_2Pow11LocalAtomics_CPUMerge_RAND400000_cpu.csv
+==9953== Profiling result:
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",99.383578,0.032209,80,0.000403,0.000002,0.001012,"[CUDA memcpy DtoH]"
+"GPU activities",0.362764,0.000118,40,0.000003,0.000002,0.000005,"aggregate(unsigned int*, unsigned int, unsigned int*)"
+"GPU activities",0.253658,0.000082,40,0.000002,0.000002,0.000002,"[CUDA memcpy HtoD]"

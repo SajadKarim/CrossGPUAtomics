@@ -1,0 +1,10 @@
+==33118== NVPROF is profiling process 33118, command: ./sandbox b2 524288 400 ./output/Exp3/Exp3_BL_2Pow29LocalAtomics_RAND400_cpu.csv
+==33118== Profiling application: ./sandbox b2 524288 400 ./output/Exp3/Exp3_BL_2Pow29LocalAtomics_RAND400_cpu.csv
+==33118== Profiling result:
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",35.259524,4.542916,50,0.090858,0.000003,0.117371,"[CUDA memcpy DtoH]"
+"GPU activities",34.455567,4.439332,40,0.110983,0.110253,0.111734,"[CUDA memcpy HtoD]"
+"GPU activities",30.284240,3.901889,40,0.097547,0.093555,0.110040,"aggregate(unsigned int*, unsigned int, unsigned int*)"
+"GPU activities",0.000541,0.000070,30,0.000002,0.000002,0.000003,"[CUDA memcpy PtoP]"
+"GPU activities",0.000127,0.000016,10,0.000002,0.000002,0.000002,"combine_devices_results(unsigned int*, unsigned int*, unsigned int*, unsigned int*, unsigned int)"

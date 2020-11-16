@@ -1,0 +1,19 @@
+==7180== NVPROF is profiling process 7180, command: ./sandbox ra 33554432/1024 1024
+==7180== Profiling application: ./sandbox ra 33554432/1024 1024
+==7180== Profiling result:
+
+==7180== Device "Tesla V100-SXM2-32GB (0)"
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",100.000000,279.176402,10,27.917640,27.915384,27.920298,"remoteAtomicsKernel(DATA*)"
+
+==7180== Device "Tesla V100-SXM2-32GB (1)"
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",100.000000,0.000034,10,0.000003,0.000003,0.000004,"[CUDA memcpy DtoH]"
+
+==7180== Device "Tesla V100-SXM2-32GB (2)"
+No kernels were profiled.
+
+==7180== Device "Tesla V100-SXM2-32GB (3)"
+No kernels were profiled.

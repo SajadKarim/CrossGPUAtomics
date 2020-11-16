@@ -1,0 +1,18 @@
+==5309== NVPROF is profiling process 5309, command: ./sandbox laex 268435456 512 8
+==5309== Profiling application: ./sandbox laex 268435456 512 8
+==5309== Profiling result:
+
+==5309== Device "Tesla V100-SXM2-32GB (0)"
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",99.993187,0.241391,10,0.024139,0.024138,0.024141,"localAtomicsKernelEx(unsigned int*, unsigned int, int)"
+"GPU activities",0.006813,0.000016,10,0.000002,0.000002,0.000002,"[CUDA memcpy DtoH]"
+
+==5309== Device "Tesla V100-SXM2-32GB (1)"
+No kernels were profiled.
+
+==5309== Device "Tesla V100-SXM2-32GB (2)"
+No kernels were profiled.
+
+==5309== Device "Tesla V100-SXM2-32GB (3)"
+No kernels were profiled.

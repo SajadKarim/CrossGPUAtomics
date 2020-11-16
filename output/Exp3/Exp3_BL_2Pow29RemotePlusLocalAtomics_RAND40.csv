@@ -1,0 +1,8 @@
+==32873== NVPROF is profiling process 32873, command: ./sandbox s2 524288 40 ./output/Exp3/Exp3_BL_2Pow29RemotePlusLocalAtomics_RAND40_cpu.csv
+==32873== Profiling application: ./sandbox s2 524288 40 ./output/Exp3/Exp3_BL_2Pow29RemotePlusLocalAtomics_RAND40_cpu.csv
+==32873== Profiling result:
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",34.957957,4.497774,40,0.112444,0.108383,0.171463,"[CUDA memcpy HtoD]"
+"GPU activities",34.726660,4.468015,80,0.055850,0.000003,0.115378,"[CUDA memcpy DtoH]"
+"GPU activities",30.315383,3.900450,40,0.097511,0.093687,0.109957,"aggregateEx(unsigned int*, unsigned int*, unsigned int*, unsigned int*, unsigned int*, unsigned int, unsigned int, unsigned int)"

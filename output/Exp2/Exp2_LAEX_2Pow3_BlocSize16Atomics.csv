@@ -1,0 +1,18 @@
+==4700== NVPROF is profiling process 4700, command: ./sandbox laex 268435456 8 16
+==4700== Profiling application: ./sandbox laex 268435456 8 16
+==4700== Profiling result:
+
+==4700== Device "Tesla V100-SXM2-32GB (0)"
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",99.999858,11.569140,10,1.156914,1.156891,1.156944,"localAtomicsKernelEx(unsigned int*, unsigned int, int)"
+"GPU activities",0.000142,0.000016,10,0.000002,0.000002,0.000002,"[CUDA memcpy DtoH]"
+
+==4700== Device "Tesla V100-SXM2-32GB (1)"
+No kernels were profiled.
+
+==4700== Device "Tesla V100-SXM2-32GB (2)"
+No kernels were profiled.
+
+==4700== Device "Tesla V100-SXM2-32GB (3)"
+No kernels were profiled.
