@@ -80,6 +80,9 @@ void localAtomicsKernelEx(unsigned int* ptrData, unsigned int nTotalAtomics, int
     }
 }
 
+/*
+ * This method performs Local Atomic operations. It simply increments a local memory location with 1.
+ */
 void localAtomics(int nGridSize, int nBlockSize)
 {
     int nGPUCount = 0;
@@ -182,6 +185,9 @@ void localAtomics(int nGridSize, int nBlockSize)
     */
 }
 
+/*
+ * This method performs Remote Atomic operations. It simply increments a remote memory location (of Peer's device) with 1.
+ */
 void remoteAtomics(int nGridSize, int nBlockSize)
 {
     int nGPUCount = 0;
@@ -292,6 +298,10 @@ void remoteAtomics(int nGridSize, int nBlockSize)
     //cudaFree(device3_data);
 }
 
+/*
+ * Extension to locaAtomics function. It allows to define BlockSize.
+ * This method is written to compare Block-Size and Thread-Count.
+ */
 void localAtomicsEx(int nTotalAtomics, int nThreadCount, int nBlockSize)
 {
     // Initializing data for device-0...
@@ -801,6 +811,10 @@ void testAggregateOperationSortedData(size_t nDataSizeMultiplier, unsigned int**
     delete[] ptrAllDevicesResults;
 }
 
+/*
+ * It is also called Mix-Atomic technique. It performs aggregate operation in a single call and it does it by 
+ * utilizing Remote Atomic calls. Unlike Baseline, it does wait to merge the values
+ */
 std::chrono::duration<double> testAggregateOperationSortedDataOpt(int nDataSizeMultiplier, unsigned int** ptrDeviceData, unsigned int nDataSizePerGPU, unsigned int** ptrDeviceResult, unsigned int nMaxRandomNumber)
 {
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
@@ -882,6 +896,9 @@ std::chrono::duration<double> testAggregateOperationSortedDataOpt(int nDataSizeM
     return time_span;
 }
 
+/*
+ * It is an extension to testAggregateOperationSortedData. It optimizes certain operations, memory initialization, for instance.
+ */
 void testAggregateOperationSortedDataOptEx(size_t nDataSizeMultiplier, unsigned int** ptrDeviceData, unsigned int nDataSizePerGPU, unsigned int** ptrDeviceResult, unsigned int nMaxRandomNumber, unsigned int** ptrDeviceProcessedThreads)
 {
     initDeviceMemoryOpt(0, ptrDeviceData, nDataSizePerGPU, ptrDeviceResult, nMaxRandomNumber, ptrDeviceProcessedThreads);
@@ -959,6 +976,12 @@ void testAggregateOperationSortedDataOptEx(size_t nDataSizeMultiplier, unsigned 
     delete ptrProcessedthreads;
 }
 
+/*
+ * It is a technique to perform aggregate operation in that the operation is made in two steps.
+ * In the first step it performs all the aggregate operations locally using Local Atomics and then
+ * in the second phase it merges the resultant vectors from the devices and prepares a final 
+ * result for the aggregate operation. It does it to avoid Remote Atomic calls.
+ */
 std::chrono::duration<double>  testAggregateOperationBaseline(size_t nDataSizeMultiplier, unsigned int** ptrDeviceData, unsigned int nDataSizePerGPU, unsigned int** ptrDeviceResult, unsigned int nMaxRandomNumber)
 {
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
@@ -1050,6 +1073,12 @@ std::chrono::duration<double>  testAggregateOperationBaseline(size_t nDataSizeMu
     return time_span;
 }
 
+/*
+ * It is a technique to perform aggregate operation in that the operation is made in two steps. 
+ * In the first step it performs all the aggregate operations locally using Local Atomics and then 
+ * in the second phase it pushes all the resultant vectors (locally performed aggregate operations) 
+ * to a single device (GPU) and then merge the values again using Local Atomics. It does it to avoid Remote Atomic calls.
+ */
 std::chrono::duration<double>  testAggregateOperationBaselineEx(size_t nDataSizeMultiplier, unsigned int** ptrDeviceData, unsigned int nDataSizePerGPU, unsigned int** ptrDeviceResult, unsigned int nMaxRandomNumber)
 {
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
@@ -1189,13 +1218,34 @@ int main(int argc, char** argv)
 
     std::cout << "Program started.." << std::endl;
 
+    /* 
+     * 
+     * Following code runs different experiments and kernels. Futher deails are added to the respective method definitions. 
+     *
+     * s1: testAggregateOperationSortedData
+     * s2: testAggregateOperationSortedDataOpt
+     * s3: testAggregateOperationSortedDataOptEx
+     * b1: testAggregateOperationBaseline
+     * b2: testAggregateOperationBaselineOpt
+     *
+     * la: localAtomics
+     * laex: localAtomicsEx
+     * ra: remoteAtomics
+     * bt: bandwidthTest
+     *
+     *
+     * Each method that is mentioned above has a different requirement and accepts differnt number and type of arguments. 
+     * Kindly go through the following code to see what parameters are required. They are marked "Mandatory!"
+     */
+
+
     if (std::string(argv[1]) == "s1"
         || std::string(argv[1]) == "s2"
         || std::string(argv[1]) == "s3"
         || std::string(argv[1]) == "b1"
         || std::string(argv[1]) == "b2")
     {
-        size_t nDataSizeMultiplier = atoi(argv[2]);    // Default: 1
+        size_t nDataSizeMultiplier = atoi(argv[2]);    // Default: 1  
         int nRandomNumberMaxLimit = atoi(argv[3]);  // Default: 4
 
         int nGPUCount = 0;
@@ -1298,12 +1348,12 @@ int main(int argc, char** argv)
 
             if (argc > 2)
             {
-                nGridSize = atoi(argv[2]);
+                nGridSize = atoi(argv[2]);  // Mandatory!   Expects GridSize for kernel execution.
             }
 
             if (argc > 3)
             {
-                nBlockSize = atoi(argv[3]);
+                nBlockSize = atoi(argv[3]); // Mandatory!   Expects BlockSize for kernel execution.
             }
 
             for (int i = 0; i < nRepeat; i++)
@@ -1313,9 +1363,9 @@ int main(int argc, char** argv)
         }
         if (std::string(argv[1]) == "laex")
         {
-            int nTotalAtomics = atoi(argv[2]);
-            int nTotalThreads = atoi(argv[3]);
-            int nBlockSize = atoi(argv[4]);
+            int nTotalAtomics = atoi(argv[2]); // Mandatory!   Total atomics that have to be executed.
+            int nTotalThreads = atoi(argv[3]); // Mandatory!   Total threads that have to be launched.
+            int nBlockSize = atoi(argv[4]); // Mandatory!   Expects BlockSize for kernel execution.
 
             for (int i = 0; i < nRepeat; i++)
             {
@@ -1329,12 +1379,12 @@ int main(int argc, char** argv)
 
             if (argc > 2)
             {
-                nGridSize = atoi(argv[2]);
+                nGridSize = atoi(argv[2]);// Mandatory!   Expects GridSize for kernel execution.
             }
 
             if (argc > 3)
             {
-                nBlockSize = atoi(argv[3]);
+                nBlockSize = atoi(argv[3]);// Mandatory!   Expects BlockSize for kernel execution.
             }
 
             for (int i = 0; i < nRepeat; i++)

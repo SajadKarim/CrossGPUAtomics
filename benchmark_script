@@ -3,7 +3,8 @@
 echo ">>>>>>Script started!<<<<<<"
 
 #--------------------------------------------------------
-# Test 3 - Remote Atomics vs W/O Remote Atomics (Baseline)
+# Test 3 - Baseline vs Mix-Atomics
+# This experiments focuses on the comparison of aggregate operations by Baseline and Mix-Atomics techniques. Baseline is a technique to perform aggregate operation in that the operation is made in two steps. In the first step it performs all the aggregate operations locally using Local Atomics and then in the second phase it pushes all the resultant vectors (locally performed aggregate operations) to a single device (GPU) and then merge the values again using Local Atomics. It does it to avoid Remote Atomic calls. On the other hand, Mix-Atomic technique performs aggregate operation in a single call and it does it by utilizing Remote Atomic calls. Unlike Baseline, it does wait to merge the values.
 #--------------------------------------------------------
 maxatomics=$((2**32)) #18446744073709551616  # 1073741824 #268435456 # 2 pow 28
 currentatomics=$((2**10))   # 2 pow 10
@@ -49,7 +50,8 @@ do
 done
 exit
 #----------------------------
-# Test 2 - Threads vs Atomics
+# Test 2 - Thread-Count vs Block-Size
+# This experiments evaluates the impact of Thread-Count and Block-Size using time complexity. The count of the Atomic operations are constant throughout the experiment and they all are Local Atomics. As stated, this experiment is performed to gauge impact of Thread-Count and Block-Size, therefore, the Atomics are performed against different configurations and in each configuration different values for Thread-Count and Block-Size are used. (Please note: Block Size refers to the data-structure/parameter that GPU uses to hide internal parallelism logic and to keep it abstract and uniform across its each variants). In this experiment we performed 2Pow28 Atomic operations. These Atomics operations are performed using single device, and GPU-0 is used for this purpose.
 #----------------------------
 totalatomics=1073741824 #268435456 # 2 pow 28
 maxthreads=1048576 #1024 # 2 pow 10
@@ -77,7 +79,8 @@ do
 done
 
 #---------------------------------
-# Test 1 - Local vs Remote Atomics 
+# Test 1 - Local vs Remote Atomics
+# This experiments focuses on the comparison of Local and Remote Atomics. In this experiment we performed Atomic operations that ranges from 2Pow10 to 2Pow28. We used two GPU devices to run this experiment. GPU-0 is used to make Local Atomics, and to make Remote Atomics GPU-1 is used. This experiment is run in two steps, 1) GPU-0 is used to perform Local Atomics for the aforementioned range, and 2) GPU-0 and GPU-1 are used together to perform Remote Atomics where the source data is copied to GPU-0 and resultant Atomics data-structure is maintained at GPU-1. 
 #---------------------------------
 final=268435456	# 2 pow 28
 current=1024	# 2 pow 10
